@@ -30,15 +30,21 @@
         input {
             width: 100%;
             padding: 10px;
-            margin: 8px 0 15px;
+            margin: 8px 0 5px;
             box-sizing: border-box;
             border: 1px solid #aaa;
             border-radius: 5px;
         }
 
+        input:focus {
+            border-color: #168aad;
+            outline: none;
+        }
+
         button {
             width: 100%;
             padding: 10px;
+            margin-top: 10px;
             background-color: #168aad;
             color: white;
             border: none;
@@ -55,6 +61,29 @@
             text-align: center;
             margin-top: 15px;
         }
+
+        .link a {
+            color: #168aad;
+            text-decoration: none;
+        }
+
+        .link a:hover {
+            text-decoration: underline;
+        }
+
+        .error {
+            color: red;
+            font-size: 13px;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .confirmation {
+            color: green;
+            text-align: center;
+            font-weight: bold;
+            margin-top: 15px;
+        }
     </style>
 </head>
 
@@ -64,22 +93,119 @@
 
     <h2>Doctor Appointment</h2>
 
-    <form>
+    <form id="loginForm">
+
         <label>Email:</label>
-        <input type="email" placeholder="Enter your email" required>
+
+        <input
+            type="email"
+            id="email"
+            placeholder="Enter your email"
+            required
+        >
+
+        <span id="emailError" class="error"></span>
+
 
         <label>Password:</label>
-        <input type="password" placeholder="Enter your password" required>
+
+        <input
+            type="password"
+            id="password"
+            placeholder="Enter your password"
+            required
+        >
+
+        <span id="passwordError" class="error"></span>
+
 
         <button type="submit">Login</button>
 
+
         <div class="link">
-            <p><a href="#">Forgot Password?</a></p>
-            <p>New User? <a href="#">Register Here</a></p>
+            <p>
+                <a href="#">Forgot Password?</a>
+            </p>
+
+            <p>
+                New User?
+                <a href="#">Register Here</a>
+            </p>
         </div>
+
+
+        <p id="confirmation" class="confirmation"></p>
+
     </form>
 
 </div>
+
+
+<script>
+
+document.getElementById("loginForm").addEventListener("submit", function(event) {
+
+    event.preventDefault();
+
+    // Get values
+    let email = document.getElementById("email").value.trim();
+    let password = document.getElementById("password").value.trim();
+
+    // Error messages
+    let emailError = document.getElementById("emailError");
+    let passwordError = document.getElementById("passwordError");
+    let confirmation = document.getElementById("confirmation");
+
+    // Clear previous messages
+    emailError.textContent = "";
+    passwordError.textContent = "";
+    confirmation.textContent = "";
+
+    let valid = true;
+
+
+    // Email validation
+    let emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (email === "") {
+
+        emailError.textContent = "Please enter your email.";
+        valid = false;
+
+    } else if (!emailPattern.test(email)) {
+
+        emailError.textContent = "Please enter a valid email address.";
+        valid = false;
+
+    }
+
+
+    // Password validation
+    if (password === "") {
+
+        passwordError.textContent = "Please enter your password.";
+        valid = false;
+
+    } else if (password.length < 6) {
+
+        passwordError.textContent =
+            "Password must contain at least 6 characters.";
+
+        valid = false;
+    }
+
+
+    // Login confirmation
+    if (valid) {
+
+        confirmation.textContent =
+            "✓ Login successful! Welcome to Doctor Appointment.";
+
+    }
+
+});
+
+</script>
 
 </body>
 </html>
